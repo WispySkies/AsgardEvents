@@ -1,0 +1,10 @@
+name: Asgardevents
+main: com.fivefourdee.asgardevents.AsgardEvents
+version: 1.0.0
+author: 54D
+commands:
+   event:
+      description: Event related.
+      usage: /event
+      permission: event.use
+      permission-message: Insufficient permissions.
