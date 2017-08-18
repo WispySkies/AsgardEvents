@@ -37,22 +37,35 @@ public class AsgardEvents extends JavaPlugin implements Listener{
 		}
 		return economy != null;
 	}
-	
+    
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		PluginDescriptionFile pdf = getDescription();
 		Server server = getServer();
+	    class helpDialogue {
+			private String showDialogue(){
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"&b&lAsgardEvents"));
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event help - Shows this help dialogue."));
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event info - Shows plugin information."));
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event reward <player> - Gives default rewards to player."));
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event winner <player> <event> - Declares winner of event."));return null;
+			}
+	    }
+		helpDialogue help = new helpDialogue();
 		if(args.length<1){
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event info - Shows plugin information."));
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event reward <player> - Gives default rewards to player."));
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event winner <player> <event> - Declares winner of event."));
-		    return true;
+			help.showDialogue();
+			return true;
+		}
+		else if(args[0].equalsIgnoreCase("help")){
+			help.showDialogue();
+			return true;
 		}
 		else if(args[0].equalsIgnoreCase("info")){
 			sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"&b&lAsgardEvents"));
 			sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Plugin by &b54D&9 with help from &bXMen&9!"));
 			sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Version &b")+pdf.getVersion());
 			sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Running on &b")+server.getServerName());
+			sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"For details, visit https://github.com/ArceusMaster0493/AsgardEvents"));
 			return true;
 		}
 		else if(args[0].equalsIgnoreCase("reward")){
@@ -91,13 +104,13 @@ public class AsgardEvents extends JavaPlugin implements Listener{
 			else if(getServer().getPlayer(args[1])==null){
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Player is offline!"));return true;
 			}
-			else if((args[2]!="Spleef")&&(args[2]!="WaterPvP")&&(args[2]!="AsgardianRush")&&(args[2]!="BowLMS")){
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Invalid event specified!"));
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Valid events are: &bAsgardianRush&9, &bBowLMS&9, &bSpleef&9, &bWaterPvP"));
-				return true;
-			}
+//			else if((args[2]!="Spleef")&&(args[2]!="WaterPvP")&&(args[2]!="AsgardianRush")&&(args[2]!="BowLMS")){
+//				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Invalid event specified!"));
+//				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Valid events are: &bAsgardianRush&9, &bBowLMS&9, &bSpleef&9, &bWaterPvP"));
+//				return true;
+//			}
 			else{
-				getServer().dispatchCommand(getServer().getConsoleSender(),("bc "+prefix+"&b"+args[1]+" has won this round of &b"+args[2]+"&9 -- Congratulations!"));
+				getServer().dispatchCommand(getServer().getConsoleSender(),("bc "+prefix+"&b"+args[1]+"&9 has won this round of &b"+args[2]+"&9 -- Congratulations!"));
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Declared &b"+args[1]+"&9 as the winner of &b"+args[2]+"&9!"));
 				player.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"You have won the event!"));
 				return true;
