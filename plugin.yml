@@ -2,6 +2,7 @@ name: AsgardEvents
 main: com.fivefourdee.asgardevents.AsgardEvents
 version: 1.2.0
 author: 54D
+depend: [Vault]
 commands:
    event:
       description: Event related.
