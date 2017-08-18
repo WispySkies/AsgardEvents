@@ -104,11 +104,11 @@ public class AsgardEvents extends JavaPlugin implements Listener{
 			else if(getServer().getPlayer(args[1])==null){
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Player is offline!"));return true;
 			}
-//			else if((args[2]!="Spleef")&&(args[2]!="WaterPvP")&&(args[2]!="AsgardianRush")&&(args[2]!="BowLMS")){
-//				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Invalid event specified!"));
-//				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Valid events are: &bAsgardianRush&9, &bBowLMS&9, &bSpleef&9, &bWaterPvP"));
-//				return true;
-//			}
+			else if((!args[2].equals("Spleef"))&&(!args[2].equals("WaterPvP"))&&(!args[2].equals("AsgardianRush"))&&(!args[2].equals("BowLMS"))){
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Invalid event specified!"));
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Valid events are: &bAsgardianRush&9, &bBowLMS&9, &bSpleef&9, &bWaterPvP"));
+				return true;
+			}
 			else{
 				getServer().dispatchCommand(getServer().getConsoleSender(),("bc "+prefix+"&b"+args[1]+"&9 has won this round of &b"+args[2]+"&9 -- Congratulations!"));
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Declared &b"+args[1]+"&9 as the winner of &b"+args[2]+"&9!"));
