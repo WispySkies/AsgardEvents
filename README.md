@@ -1,6 +1,9 @@
 # AsgardEvents
 Plugin to assist in the Asgard Ascension Event Team's daily operations.
 
+### Dependencies
+* [Vault](https://www.spigotmc.org/resources/vault.41918/)
+
 ### Commands
 * `/event help`: Shows this help dialogue.
 * `/event info`: Shows plugin information.
