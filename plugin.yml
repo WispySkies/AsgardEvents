@@ -1,6 +1,6 @@
 name: Asgardevents
 main: com.fivefourdee.asgardevents.AsgardEvents
-version: 1.0.0
+version: 1.2.0
 author: 54D
 commands:
    event:
