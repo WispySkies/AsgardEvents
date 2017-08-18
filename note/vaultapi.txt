@@ -3,13 +3,14 @@ public void onEnable(){
 	setupEconomy();
 }
 private boolean setupEconomy() {
-  RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-  if (economyProvider != null)
-    economy = economyProvider.getProvider();
-  return economy != null;
+	RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+	if (economyProvider != null){
+	    economy = economyProvider.getProvider();
+	}
+	return economy != null;
 }
 public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-  economy.getBalance(player)
-  economy.withdrawPlayer(player, amount)
-  economy.depositPlayer(player, amount)
+	economy.getBalance(player)
+	economy.withdrawPlayer(player, amount)
+	economy.depositPlayer(player, amount)
 }
