@@ -21,43 +21,73 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 public class AsgardEvents extends JavaPlugin implements Listener{
 	
+	Logger logger;
 	private Economy economy;
 	String prefix = "&8[&bEvent&8]&9 ";
+	int debug = 0;
 	
 	@Override
 	public void onEnable(){
+		logger = getLogger();
 		Bukkit.getPluginManager().registerEvents(this,this);
 		setupEconomy();
 	}
 	
-	private boolean setupEconomy() {
+	private boolean setupEconomy(){
+		logger = getLogger();
 		RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
 		if (economyProvider != null){
 		    economy = economyProvider.getProvider();
+		    logger.info("Vault found!");
 		}
 		return economy != null;
 	}
     
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-		PluginDescriptionFile pdf = getDescription();
-		Server server = getServer();
-	    class helpDialogue {
-			private String showDialogue(){
+		class predefinedMessage{
+			String help(){
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"&b&lAsgardEvents"));
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event debug - Toggles debug mode."));
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event help - Shows this help dialogue."));
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event info - Shows plugin information."));
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event reward <player> - Gives default rewards to player."));
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event winner <player> <event> - Declares winner of event."));return null;
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"/event winner <player> <event> - Declares winner of event."));
+				return null;
+			}
+			String offlinePlayer(){
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Player is offline!"));
+				return null;
+			}
+			String paramAmount(){
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Invalid amount of parameters given!"));
+				return null;
 			}
 	    }
-		helpDialogue help = new helpDialogue();
+		PluginDescriptionFile pdf = getDescription();
+		Server server = getServer();
+	    predefinedMessage pdm = new predefinedMessage();
+		logger = getLogger();
+	    
 		if(args.length<1){
-			help.showDialogue();
+			pdm.help();
+			return true;
+		}
+		else if(args[0].equalsIgnoreCase("debug")){
+			if(debug==0){
+				debug=1;
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Debug mode toggled on!"));
+				logger.info("[Debug] "+sender.getName()+" toggled debug mode ON.");
+			}
+			else{
+				debug=0;
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Debug mode toggled off!"));
+				logger.info("[Debug] "+sender.getName()+" toggled debug mode OFF.");
+			}
 			return true;
 		}
 		else if(args[0].equalsIgnoreCase("help")){
-			help.showDialogue();
+			pdm.help();
 			return true;
 		}
 		else if(args[0].equalsIgnoreCase("info")){
@@ -71,7 +101,7 @@ public class AsgardEvents extends JavaPlugin implements Listener{
 		else if(args[0].equalsIgnoreCase("reward")){
 			Player player = getServer().getPlayer(args[1]);
 			if(args.length!=2){
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Invalid amount of parameters given!"));
+				pdm.paramAmount();
 				return true;
 			}
 			else if(getServer().getPlayer(args[1])!=null){
@@ -88,21 +118,25 @@ public class AsgardEvents extends JavaPlugin implements Listener{
 		        // Notifications.
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Given default event rewards to &b"+args[1]+"&9!"));
 				player.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"You have been rewarded!"));
+				if(debug==1){
+					logger.info("[Debug] "+sender.getName()+" successfully gave default event rewards to "+player.getName()+".");
+				}
 				return true;
 			}
 			else{
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Player is offline!"));
+				pdm.offlinePlayer();
 				return true;
 			}
 		}
 		else if(args[0].equalsIgnoreCase("winner")){
 			Player player = getServer().getPlayer(args[1]);
 			if(args.length!=3){
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Invalid amount of parameters given!"));
+				pdm.paramAmount();
 				return true;
 			}
 			else if(getServer().getPlayer(args[1])==null){
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Player is offline!"));return true;
+				pdm.offlinePlayer();
+				return true;
 			}
 			else if((!args[2].equals("Spleef"))&&(!args[2].equals("WaterPvP"))&&(!args[2].equals("AsgardianRush"))&&(!args[2].equals("BowLMS"))){
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Invalid event specified!"));
@@ -113,11 +147,13 @@ public class AsgardEvents extends JavaPlugin implements Listener{
 				getServer().dispatchCommand(getServer().getConsoleSender(),("bc "+prefix+"&b"+args[1]+"&9 has won this round of &b"+args[2]+"&9 -- Congratulations!"));
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Declared &b"+args[1]+"&9 as the winner of &b"+args[2]+"&9!"));
 				player.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"You have won the event!"));
-				return true;
+				if(debug==1){
+					logger.info("[Debug] "+sender.getName()+" successfully declared "+player.getName()+" as winner of "+args[2]+".");
+				}return true;
 			}
 		}
 		else{
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&',prefix+"Invalid subcommand specified!"));
+			pdm.help();
 			return true;
 		}
 	}
