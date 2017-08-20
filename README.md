@@ -5,6 +5,7 @@ Plugin to assist in the Asgard Ascension Event Team's daily operations.
 * [Vault](https://www.spigotmc.org/resources/vault.41918/)
 
 ### Commands
+* `/event debug`: Toggles debug mode.
 * `/event help`: Shows this help dialogue.
 * `/event info`: Shows plugin information.
 * `/event reward <player>`: Gives default rewards to player.
