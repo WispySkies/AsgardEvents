@@ -1,6 +1,6 @@
 name: AsgardEvents
 main: com.fivefourdee.asgardevents.AsgardEvents
-version: 1.2.0
+version: 1.3.1
 author: 54D
 depend: [Vault]
 commands:
